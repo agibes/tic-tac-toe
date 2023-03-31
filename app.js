@@ -274,21 +274,33 @@ startGameBttn.addEventListener('click', () => {
                                 // } else {
                                     
                                 // }
-                            computerMakeMove();
-                            changeTurns();
+                             if (playerTwo.value === 'Computer') { //if player two's turn add o & change turn 
+                                computerMakeMove();
+                                changeTurns();
+                             }   
                             //}     
                             console.log(state.gameBoard);
                             console.log(state.currentState[0]);
-                     } //else { //if player two's turn add o & change turn 
-                //         state.gameBoard[i].takenBy = 'o';
-                //         event.target.innerText = 'o';
-                //         changeTurns();
-                //     }
-                // }
+                     } else if (playerTwo.className === 'myTurn' && playerTwo.value != 'Computer') {
+                        let test1 = document.getElementById(`${i}`);
+                        test1.innerText = 'x';
+                        state.gameBoard[i].takenBy = 'o';
+                        state.currentState[0][i] = 'o';
+                        event.target.innerText = 'o';
+                        console.log('i ' + i);
+                        num = stateOfOptions.indexOf(i);
+                        console.log('num is ' +num);
+                        stateOfOptions.splice(num, 1);
+                        console.log('state of options after splice 1 ');
+                        console.log(stateOfOptions);
+                        changeTurns();
+                     }
+                 }
             }
-    }});
-    }
-  });
+    });
+ }});
+//      }
+// //   });
   
 
 

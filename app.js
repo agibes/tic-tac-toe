@@ -95,16 +95,13 @@ const playerTwoNameDisplay = document.createElement('p');
 //start functions
 //Change the class name on the player input element (to determine whose turn it is)
 function changeTurns() {
+    
     if (playerOne.className === 'myTurn') {
         playerOne.className = 'notMyTurn';
         playerTwo.className = 'myTurn';
-        state.players[0].isTurn = false;
-        state.players[1].isTurn = true;
     } else {
         playerOne.className = 'myTurn';
         playerTwo.className = 'notMyTurn';
-        state.players[0].isTurn = true;
-        state.players[1].isTurn = false;
     }
 }
 
@@ -112,10 +109,8 @@ function changeTurns() {
 function determineFirstPlayer() {
     if ((Math.floor(Math.random() * 2)) === 0){ //generate a random number between 0 and 1 - if num is 0, player one goes first
         playerOne.className = 'myTurn';
-        state.players[0].isTurn = true;
     } else {
-        playerTwo.className = 'myTurn';
-        state.players[1].isTurn = true;   
+        playerTwo.className = 'myTurn';  
     };
 }
 
@@ -182,6 +177,10 @@ function displayNames() {
         playerTwoNameDisplay.remove();
     }});
 
+//
+let arrayOfOptions = [0,1,2,3,4,5,6,7,8];
+let stateOfOptions = arrayOfOptions.slice();
+let num;
 //when the start game button is clicked
 startGameBttn.addEventListener('click', () => { 
 
@@ -201,8 +200,8 @@ startGameBttn.addEventListener('click', () => {
         state.players[0] = `${playerOne.value}`;
         state.players[1] = `${playerTwo.value}`;
 
-        determineFirstPlayer();
-        
+        //determineFirstPlayer();
+        playerTwo.className = 'myTurn';
         displayNames();
 
         gameBoard.addEventListener('click', (event) => { //populate the game board (and game state array) and change player turn after each valid move
@@ -217,9 +216,35 @@ startGameBttn.addEventListener('click', () => {
                         return;
                     //using an if statement to determine if it's player one's turn based on a class seemed easier than writing a function for it - then I can also create a Math.floor(rand 0 - 1) to randomly choose a player to go first. if 0 it will assign player one a class of 'my turn' and vice versa
                     } else if (playerOne.className === 'myTurn') { //if player one's turn add x & change turn
-                        state.gameBoard[i].takenBy = 'x';
-                        event.target.innerText = 'x';
-                        changeTurns();
+                            let test1 = document.getElementById(`${i}`);
+                            test1.innerText = 'x';
+                            state.gameBoard[i].takenBy = 'x';
+                            state.currentState[0][i] = 'x';
+                            event.target.innerText = 'x';
+                            console.log('i ' + i);
+                            num = stateOfOptions.indexOf(i);
+                            console.log('num is ' +num);
+                            stateOfOptions.splice(num, 1);
+                            console.log('state of options after splice 1 ');
+                            console.log(stateOfOptions);
+                            let rand = Math.floor(Math.random() * stateOfOptions.length);
+                            let test2 = document.getElementById(`${stateOfOptions[rand]}`); //get div
+                            console.log('random number ' + rand);
+                            console.log(stateOfOptions[rand]);
+                            changeTurns();
+                            if (playerTwo.value === 'Computer') {
+                                if (!state.gameBoard[stateOfOptions[rand]].takenBy) {
+                                    let num2 = stateOfOptions[rand];
+                                    test2.innerText = 'o';
+                                    state.gameBoard[stateOfOptions[rand]].takenBy = 'o';
+                                    state.currentState[0][num2] = 'o';
+                                    console.log('num2 is ' +num2);
+                                    stateOfOptions.splice(rand, 1);
+                                    console.log('state of options after splice 2 ');
+                                    console.log(stateOfOptions);
+                                    changeTurns();
+                                }
+                            } 
                     } else { //if player two's turn add o & change turn 
                         state.gameBoard[i].takenBy = 'o';
                         event.target.innerText = 'o';

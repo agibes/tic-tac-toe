@@ -174,6 +174,10 @@ function computerMakeMove() {
 /********************************************** Phase Two **********************************************/
 /*********************************** My Originall Work (before refactoring completely) ***********************************/
 
+let arrayOfOptions = [0,1,2,3,4,5,6,7,8];
+let stateOfOptions = arrayOfOptions.slice();
+let num;
+
   //program the reset board button (in case you mess up and/or want to start over)
   resetButton.addEventListener('click', () => { 
     for (let i = 0; i < state.gameBoard.length; i++){
@@ -184,6 +188,11 @@ function computerMakeMove() {
         playerOne.value = '';
         playerTwo.value = '';
         state.playing = false;
+        state.currentState[0][i] = '';
+        stateOfOptions = arrayOfOptions.slice();
+        console.log(state.gameBoard);
+        console.log(state.currentState[0]);
+
         //below is all for the displayNames() function - so that the input boxes reappear
         playerOne.style.visibility = 'visible';
         playerTwo.style.visibility = 'visible';
@@ -199,9 +208,7 @@ function computerMakeMove() {
     }});
 
 //
-let arrayOfOptions = [0,1,2,3,4,5,6,7,8];
-let stateOfOptions = arrayOfOptions.slice();
-let num;
+
 //when the start game button is clicked
 startGameBttn.addEventListener('click', () => { 
 

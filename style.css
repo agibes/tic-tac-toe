@@ -1,0 +1,52 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+    text-align: center;
+}
+
+#gameName {
+   font-size: 3em;
+}
+
+#gameBoard {
+    margin: auto 10vw;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.cell {
+    border: 1px solid black;
+    width: 25vw;
+    height: 20vh;
+    font-size: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+input {
+    padding: 10px;
+    margin: 5px;
+}
+
+#playerNames {
+    margin: auto auto;
+    width: 75vw;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+#playerNames p {
+    padding: 10px;
+    margin: auto;
+    width: 25vw;
+    font-size: 1.5em;
+}

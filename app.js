@@ -150,6 +150,27 @@ function displayNames() {
     }
 };
 
+function computerMakeMove() {
+    let rand = Math.floor(Math.random() * stateOfOptions.length);
+    let test2 = document.getElementById(`${stateOfOptions[rand]}`); //get div
+    //console.log('random number ' + rand);
+    //console.log(stateOfOptions[rand]);
+    if (state.gameBoard[stateOfOptions[rand]].takenBy) {
+        computerMakeMove();
+    } else {
+        let num2 = stateOfOptions[rand];
+        test2.innerText = 'o';
+        state.gameBoard[stateOfOptions[rand]].takenBy = 'o';
+        state.currentState[0][num2] = 'o';
+        console.log('num2 is ' +num2);
+        stateOfOptions.splice(rand, 1);
+        console.log('state of options after splice 2 ');
+        console.log(stateOfOptions);
+        //changeTurns();
+        console.log('p1 ' +playerOne.className)
+    }
+}
+
 /********************************************** Phase Two **********************************************/
 /*********************************** My Originall Work (before refactoring completely) ***********************************/
 
@@ -201,16 +222,23 @@ startGameBttn.addEventListener('click', () => {
         state.players[1] = `${playerTwo.value}`;
 
         //determineFirstPlayer();
-        playerTwo.className = 'myTurn';
+        playerOne.className = 'myTurn';
         displayNames();
 
+        if (playerTwo.value === 'Computer' && playerTwo.className === 'myTurn') {
+            computerMakeMove();
+            changeTurns();
+            
+            console.log('asd');
+        } 
+            
         gameBoard.addEventListener('click', (event) => { //populate the game board (and game state array) and change player turn after each valid move
             
             //find the matching id, and when found add x or o to object key {innerText: value} and div.innerText
             for (let i = 0; i < state.gameBoard.length; i++){ //loop through the state.gameBoard array of objects
                 if ((playerOne.value === '') || (playerTwo.value === '')) return; //if player name value is blank => return (exit)
-                    
-                
+                //console.log('hi');
+                //console.log('p1 ' +playerOne.className);
                 if (state.gameBoard[i].id == event.target.getAttribute('id')) { //if it finds the matching div.id and gameBoard.id
                     if (state.gameBoard[i].takenBy != '') { //if already marked return (exit)
                         return;
@@ -227,35 +255,53 @@ startGameBttn.addEventListener('click', () => {
                             stateOfOptions.splice(num, 1);
                             console.log('state of options after splice 1 ');
                             console.log(stateOfOptions);
-                            let rand = Math.floor(Math.random() * stateOfOptions.length);
-                            let test2 = document.getElementById(`${stateOfOptions[rand]}`); //get div
-                            console.log('random number ' + rand);
-                            console.log(stateOfOptions[rand]);
+                            //let rand = Math.floor(Math.random() * stateOfOptions.length);
+                            //let test2 = document.getElementById(`${stateOfOptions[rand]}`); //get div
+                            //console.log('random number ' + rand);
+                            //console.log(stateOfOptions[rand]);
                             changeTurns();
-                            if (playerTwo.value === 'Computer') {
-                                if (!state.gameBoard[stateOfOptions[rand]].takenBy) {
-                                    let num2 = stateOfOptions[rand];
-                                    test2.innerText = 'o';
-                                    state.gameBoard[stateOfOptions[rand]].takenBy = 'o';
-                                    state.currentState[0][num2] = 'o';
-                                    console.log('num2 is ' +num2);
-                                    stateOfOptions.splice(rand, 1);
-                                    console.log('state of options after splice 2 ');
-                                    console.log(stateOfOptions);
-                                    changeTurns();
-                                }
-                            } 
-                    } else { //if player two's turn add o & change turn 
-                        state.gameBoard[i].takenBy = 'o';
-                        event.target.innerText = 'o';
-                        changeTurns();
-                    }
-                }
+                            //if (playerTwo.value === 'Computer') {
+                                // if (!state.gameBoard[stateOfOptions[rand]].takenBy) {
+                                //     let num2 = stateOfOptions[rand];
+                                //     test2.innerText = 'o';
+                                //     state.gameBoard[stateOfOptions[rand]].takenBy = 'o';
+                                //     state.currentState[0][num2] = 'o';
+                                //     console.log('num2 is ' +num2);
+                                //     stateOfOptions.splice(rand, 1);
+                                //     console.log('state of options after splice 2 ');
+                                //     console.log(stateOfOptions);
+                                //     changeTurns();
+                                // } else {
+                                    
+                                // }
+                            computerMakeMove();
+                            changeTurns();
+                            //}     
+                            console.log(state.gameBoard);
+                            console.log(state.currentState[0]);
+                     } //else { //if player two's turn add o & change turn 
+                //         state.gameBoard[i].takenBy = 'o';
+                //         event.target.innerText = 'o';
+                //         changeTurns();
+                //     }
+                // }
             }
-        });
+    }});
     }
   });
   
+
+
+
+                // } else if (playerOne.className === 'myTurn') {
+
+                // } else if (playerTwo.value === 'Computer') {
+                //     computerMakeMove();
+                //     changeTurns();
+                // } else {
+
+                // }
+
 
 
 

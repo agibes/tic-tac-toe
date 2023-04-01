@@ -30,7 +30,6 @@ const state = {
         '','','',
         '','',''
     ]],
-    playing: false
  };
 
  /********************************************* Phase One *********************************************/
@@ -178,8 +177,7 @@ let arrayOfOptions = [0,1,2,3,4,5,6,7,8];
 let stateOfOptions = arrayOfOptions.slice();
 let num;
 
-  //program the reset board button (in case you mess up and/or want to start over)
-  resetButton.addEventListener('click', () => { 
+function resetBoard() {
     for (let i = 0; i < state.gameBoard.length; i++){
         state.gameBoard[i].takenBy = '';
         document.getElementById(`${i}`).innerText = '';
@@ -190,6 +188,7 @@ let num;
         state.playing = false;
         state.currentState[0][i] = '';
         stateOfOptions = arrayOfOptions.slice();
+        playing = false;
         console.log(state.gameBoard);
         console.log(state.currentState[0]);
 
@@ -205,12 +204,67 @@ let num;
         playerOneNameDisplay.remove();
         versus.remove();
         playerTwoNameDisplay.remove();
-    }});
+    }}
+
+  //program the reset board button (in case you mess up and/or want to start over)
+  resetButton.addEventListener('click', resetBoard);
 
 //
+// let playing = false;
+// console.log(playing);
+console.log(state.winConditions[0]);
+console.log(state.winConditions[1]);
+console.log(state.winConditions[2]);
+
+console.log(state.currentState[0][0]);
+
+ function checkWin() {
+    if (state.currentState[0][0] != '' && state.currentState[0][0] == state.currentState[0][1] && state.currentState[0][0] == state.currentState[0][2]) {
+        // alert('Game Over');
+        resetBoard();
+        return true;
+    } 
+    if (state.currentState[0][3] != '' && state.currentState[0][3] == state.currentState[0][4] && state.currentState[0][3] == state.currentState[0][5]) {
+        // alert('Game Over');
+        resetBoard();
+        return true;
+    } 
+    if (state.currentState[0][6] != '' && state.currentState[0][6] == state.currentState[0][7] && state.currentState[0][6] == state.currentState[0][9]) {
+        // alert('Game Over');
+        resetBoard();
+        return true;
+    } 
+    if (state.currentState[0][0] != '' && state.currentState[0][0] == state.currentState[0][3] && state.currentState[0][0] == state.currentState[0][6]) {
+        // alert('Game Over');
+        resetBoard();
+        return true;
+    } 
+    if (state.currentState[0][1] != '' && state.currentState[0][1] == state.currentState[0][4] && state.currentState[0][1] == state.currentState[0][7]) {
+        // alert('Game Over');
+        resetBoard();
+        return true;
+    } 
+    if (state.currentState[0][2] != '' && state.currentState[0][2] == state.currentState[0][5] && state.currentState[0][2] == state.currentState[0][8]) {
+        // alert('Game Over');
+        resetBoard();
+        return true;
+    } 
+    if (state.currentState[0][0] != '' && state.currentState[0][0] == state.currentState[0][4] && state.currentState[0][0] == state.currentState[0][8]) {
+        // alert('Game Over');
+        resetBoard();
+        return true;
+    } 
+    if (state.currentState[0][2] != '' && state.currentState[0][2] == state.currentState[0][4] && state.currentState[0][2] == state.currentState[0][6]) {
+        // alert('Game Over');
+        resetBoard();
+        return true;
+    } 
+ }
 
 //when the start game button is clicked
+
 startGameBttn.addEventListener('click', () => { 
+
 
     if (playerOne.value === '' && playerTwo.value != '') { //if player did not input name => alert
         playerTwo.value = '';
@@ -235,10 +289,7 @@ startGameBttn.addEventListener('click', () => {
         if (playerTwo.value === 'Computer' && playerTwo.className === 'myTurn') {
             computerMakeMove();
             changeTurns();
-            
-            console.log('asd');
-        } 
-            
+        }   
         gameBoard.addEventListener('click', (event) => { //populate the game board (and game state array) and change player turn after each valid move
             
             //find the matching id, and when found add x or o to object key {innerText: value} and div.innerText
@@ -266,6 +317,9 @@ startGameBttn.addEventListener('click', () => {
                             //let test2 = document.getElementById(`${stateOfOptions[rand]}`); //get div
                             //console.log('random number ' + rand);
                             //console.log(stateOfOptions[rand]);
+                            if (checkWin()) {
+                                alert('Player One is the winner');
+                            };
                             changeTurns();
                             //if (playerTwo.value === 'Computer') {
                                 // if (!state.gameBoard[stateOfOptions[rand]].takenBy) {
@@ -283,6 +337,9 @@ startGameBttn.addEventListener('click', () => {
                                 // }
                              if (playerTwo.value === 'Computer') { //if player two's turn add o & change turn 
                                 computerMakeMove();
+                                if (checkWin()) {
+                                    alert('Player 2 is the winner');
+                                };
                                 changeTurns();
                              }   
                             //}     
@@ -300,145 +357,16 @@ startGameBttn.addEventListener('click', () => {
                         stateOfOptions.splice(num, 1);
                         console.log('state of options after splice 1 ');
                         console.log(stateOfOptions);
+                        if (checkWin()) {
+                            alert('Player 2 is the winner');
+                        };
                         changeTurns();
                      }
                  }
             }
     });
  }});
-//      }
-// //   });
-  
-
-
-
-                // } else if (playerOne.className === 'myTurn') {
-
-                // } else if (playerTwo.value === 'Computer') {
-                //     computerMakeMove();
-                //     changeTurns();
-                // } else {
-
-                // }
 
 
 
 
-
-  /******************************how i tried to move forward before scrapping everything and starting over 
-   * comment out lines 208-233 to get this to work
-
-            gameBoard.addEventListener('click', (event) => { //populate the game board (and game state array) and change player turn after each valid move
-            
-                //find the matching id, and when found add x or o to object key {innerText: value} and div.innerText
-                for (let i = 0; i < state.gameBoard.length; i++){ //loop through the state.gameBoard array of objects
-                     if ((playerOne.value === '') || (playerTwo.value === '')) return; //if player name value is blank => return (exit)
-            
-                     if (state.gameBoard[i].id == event.target.getAttribute('id')) { //if it finds the matching div.id and gameBoard.id
-                         if (state.gameBoard[i].takenBy != '') { //if already marked return (exit)
-                            return;
-                        //using an if statement to determine if it's player one's turn based on a class seemed easier than writing a function for it - then I can also create a Math.floor(rand 0 - 1) to randomly choose a player to go first. if 0 it will assign player one a class of 'my turn' and vice versa
-                        } else if (playerOne.className === 'myTurn') { //if player one's turn add x & change turn
-                            state.gameBoard[i].innerText = 'x';
-                            event.target.innerText = 'x';
-                            changeTurns();
-                        } else { //if player two's turn add o & change turn
-                            if ((playerTwo.value === 'Computer')) {
-                                for (let i = 0; i < state.gameBoard.length; i++){
-                                    if (state.gameBoard[i].innerText === '') { //if space is blank
-                                        state.gameBoard[i].innerText = 'o';
-                                        event.target.innerText = 'o';
-                                        changeTurns();
-                                        } else { 
-                                            state.gameBoard[i].innerText = 'o';
-                                            event.target.innerText = 'o';
-                                            changeTurns();
-                                }
-                            }
-                        }
-                }
-            }
-        }
-    });
-    }});
-    */ 
-
-
-
-
-
-
-
-/*****************************this is where I left off, basically redoing everything
- * comment out everything after phase one to get it to work
-
-let arrayOfOptions = [0,1,2,3,4,5,6,7,8];
-let stateOfOptions = arrayOfOptions.slice();
-//console.log(stateOfOptions);
-let num;
-function populateCell(event) {
-    for (let i = 0; i < state.gameBoard.length; i++) {
-        if (state.gameBoard[i].id == event.target.getAttribute('id')) {
-            let test1 = document.getElementById(`${i}`); //get div
-            test1.innerText = 'x'; //populate cell at that div
-            state.gameBoard[i].takenBy = 'x';
-            state.currentState[0][i] = 'x';
-            console.log('i ' + i);
-            num = stateOfOptions.indexOf(i);
-            console.log('num is ' +num);
-            stateOfOptions.splice(num, 1);
-            //
-            console.log('state of options after splice 1 ');
-            console.log(stateOfOptions);
-            let rand = Math.floor(Math.random() * stateOfOptions.length);
-            //
-
-            console.log('random number ' + rand);
-            console.log(stateOfOptions[rand]);
-           // let num = stateOfOptions[rand]
-            let test2 = document.getElementById(`${stateOfOptions[rand]}`); //get div
-
-
-            if (!state.gameBoard[stateOfOptions[rand]].takenBy) {
-                let num2 = stateOfOptions[rand];
-                test2.innerText = 'o';
-                state.gameBoard[stateOfOptions[rand]].takenBy = 'o';
-                state.currentState[0][num2] = 'o';
-
-                console.log('num2 is ' +num2);
-                stateOfOptions.splice(rand, 1);
-                console.log('state of options after splice 2 ');
-                console.log(stateOfOptions);
-            } 
-        }
-
-    }
-    //
-    console.log(state.gameBoard);
-    console.log(state.currentState[0]);
-    
-}
-gameBoard.addEventListener('click', populateCell);
-*/
-
-
-
-
-
-
-
-/********************work I started with Adam
- * to start over again, after phase one
-
-
-let arrayOfOptions = [0,1,2,3,4,5,6,7,8];
-let copyArray = [...arrayOfOptions];
-
-function computerPlay() {
-    let arr =[];
-    for (let i = 0; i < copyArray.length; i++) {
-        if its empty, push it to the array arr
-        generate a random number
-    }
-}
- */
